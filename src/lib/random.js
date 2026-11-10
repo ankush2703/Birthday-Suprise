@@ -1,0 +1,14 @@
+// Tiny seeded random generator so decorations are "random" but stable between renders.
+export function rng(seed = 1) {
+  let a = seed >>> 0
+  return function next() {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = a
+    t = Math.imul(t ^ (t >>> 15), t | 1)
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+export const between = (r, min, max) => min + r() * (max - min)
+export const pick = (r, list) => list[Math.floor(r() * list.length)]
